@@ -1,0 +1,71 @@
+{% extends 'rent_cars/base.html' %}
+{% load static %}
+
+{% block extraCSS %}
+  <link href="{% static 'rent_cars/css/indexStyle.css' %}" rel="stylesheet">
+{% endblock %}  
+
+{% block content %}  
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Add New Location</h6>
+    </a>
+    <div class="collapse" id="collapseCardExample">  
+      <div class="card-body">    
+        <form action="{% url 'add_location' %}" method="POST">  
+          {% csrf_token %}      
+          {% for field in form %}
+            <div class="form-group">
+              {{ field.errors }}
+              {{ field.label_tag }} {{ field }}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}  
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>       
+      </div>
+    </div>
+  </div>
+  
+  <div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+      <h6 class="m-0 font-weight-bold text-primary">Location Details</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+      <div class="card-body">
+        <div class="chart-area" style="height:35em;overflow-y:scroll;">
+            <table class="table table-striped text-center">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">District name</th>
+                  <th scope="col">Distance from Dhaka</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for location in locations %}
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{location.district_name}}</td>
+                  <td>{{location.distance_from_dhaka}}</td>
+                  <td><a href="{% url 'edit_location' location.id %}"><i class="fas fa-eye"></i></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>        
+        </div>
+    </div>
+  </div>
+</div>
+<!-- End of Main Content -->
+
+{% endblock %} 

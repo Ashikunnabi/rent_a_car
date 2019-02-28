@@ -1,0 +1,83 @@
+{% extends 'rent_cars/base.html' %}
+{% load static %}
+
+{% block extraCSS %}
+  <link href="{% static 'rent_cars/css/indexStyle.css' %}" rel="stylesheet">
+{% endblock %}  
+
+{% block content %}  
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="card shadow m-5">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Car Details</h6>
+    </div>
+    <div class="card-body p-3">
+      <form id="form1" action="{% url 'edit_car' car.id %}" method="POST">
+      {% csrf_token %}
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Brand name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="brand_name" value="{{car.brand_name}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Model name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="model_name" value="{{car.model_name}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Car number</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="car_number" value="{{car.car_number}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Total seats</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="total_seat" value="{{car.total_seat}}">
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="card-footer py-3">
+      <div class="float-right">
+        <a href="#" onclick="document.getElementById('form1').submit();"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-edit"></i> Save Change</h6></a>
+      </div>
+      
+      <form id="form2" action="{% url 'delete_car' car.id %}" method="POST">
+        {% csrf_token %}
+        <div class="float-left">
+          <a href="#" data-toggle="modal" data-target="#exampleModal"><h6 class="m-0 font-weight-bold text-danger"><i class="fas fa-eraser"></i> Delete</h6></a>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"style="color:red">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h4>You want to delete:</h4>
+                <h6 style="color:blue">{{car.car_number}}</h6>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-primary">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>       
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End of Main Content -->
+
+{% endblock %} 

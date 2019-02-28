@@ -1,0 +1,140 @@
+{% extends 'rent_cars/base.html' %}
+{% load static %}
+
+{% block extraCSS %}
+  <link href="{% static 'rent_cars/css/indexStyle.css' %}" rel="stylesheet">
+{% endblock %}  
+
+{% block content %}  
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <div class="card shadow m-5">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Location Details</h6>
+    </div>
+    <div class="card-body p-3">
+      <form id="form1" action="{% url 'edit_rent_car' rent_car.id %}" method="POST">
+      {% csrf_token %}
+        <div class="form-group row">
+          
+          <label for="inputPassword" class="col-sm-4 col-form-label">
+          <a href="{% url 'edit_customer' rent_car.customer.id %}" target="_blank">Customer name</a>
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control" name="customer">
+            {% for customer in customers %}
+              {% if customer.id == rent_car.customer.id %}
+                <option selected>{{customer}}</option>
+              {% else %}
+                <option>{{customer}}</option>
+              {% endif %}
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Journey From</label>
+          <div class="col-sm-8">
+            <select class="form-control" name="journey_from">
+            {% for location in locations %}
+              {% if location.id == rent_car.journey_from.id %}
+                <option selected>{{location}}</option>
+              {% else %}
+                <option>{{location}}</option>
+              {% endif %}
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Journey To</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="journey_to" value="{{rent_car.journey_to}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Journey At</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="journey_date" value="{{rent_car.journey_date|date:'Y-m-d H:i'}}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">          
+          <a href="{% url 'edit_car' rent_car.car.id %}" target="_blank">Car Number</a>
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control" name="car">
+            {% for car in cars %}
+              {% if car.id == rent_car.car.id %}
+                <option selected>{{car}}</option>
+              {% else %}
+                <option>{{car}}</option>
+              {% endif %}
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">          
+          <a href="{% url 'edit_driver' rent_car.driver.id %}" target="_blank">Driver Name</a>
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control" name="driver">
+            {% for driver in drivers %}
+              {% if driver.id == rent_car.driver.id %}
+                <option selected>{{driver}}</option>
+              {% else %}
+                <option>{{driver}}</option>
+              {% endif %}
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-4 col-form-label">Cost</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="cost" value="{{rent_car.cost}}">
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="card-footer py-3">
+      <div class="float-right">
+        <a href="#" onclick="document.getElementById('form1').submit();"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-edit"></i> Save Change</h6></a>
+      </div>
+      
+      <form id="form2" action="{% url 'delete_rent_car' rent_car.id %}" method="POST">
+        {% csrf_token %}
+        <div class="float-left">
+          <a href="#" data-toggle="modal" data-target="#exampleModal"><h6 class="m-0 font-weight-bold text-danger"><i class="fas fa-eraser"></i> Delete</h6></a>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"style="color:red">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h4>You want to delete:</h4>
+                <h6 style="color:blue">{{rent_car.district_name}}</h6>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-primary">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>       
+      </form>
+    </div>
+  </div>
+</div>
+<!-- End of Main Content -->
+
+{% endblock %} 
